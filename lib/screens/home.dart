@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:riverpod/widgets/title.dart';
+import 'package:riverpod/widgets/todo_list_item.dart';
 import 'package:riverpod/widgets/tooltip.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -39,7 +40,11 @@ class _HomeScreenState extends State<HomeScreen> {
               CustomTooltip(
                   message: 'Uncompleted Todos', buttonText: 'Uncompleted'),
             ],
-          )
+          ),
+          TodoListItem(),
+          TodoListItem(),
+          TodoListItem(),
+          TodoListItem(),
         ],
       ),
     );
