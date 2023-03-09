@@ -31,17 +31,7 @@ class HomeScreen extends ConsumerWidget {
           const SizedBox(
             height: 20,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Expanded(child: Text('4 todos')),
-              CustomTooltip(message: 'All Todos', buttonText: 'All'),
-              CustomTooltip(
-                  message: 'Completed Todos', buttonText: 'Completed'),
-              CustomTooltip(
-                  message: 'Uncompleted Todos', buttonText: 'Uncompleted'),
-            ],
-          ),
+          const Toolbar(),
           for (int i = 0; i < todos.length; i++)
             Dismissible(
                 key: UniqueKey(),
@@ -51,6 +41,33 @@ class HomeScreen extends ConsumerWidget {
                 child: TodoListItem(todo: todos[i]))
         ],
       ),
+    );
+  }
+}
+
+class Toolbar extends ConsumerWidget {
+  const Toolbar({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final listLength = ref.watch(toDoListProvider).length;
+    final listCompleted =
+        ref.watch(toDoListProvider).where((element) => element.isCompleted).length;
+    final listUncompleted =
+        ref.watch(toDoListProvider).where((element) => !element.isCompleted).length;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(child: Text(listLength.toString())),
+        CustomTooltip(message: 'All Todos $listLength', buttonText: 'All'),
+        CustomTooltip(
+            message: listCompleted.toString(), buttonText: 'Completed'),
+        CustomTooltip(
+            message: listUncompleted.toString(),
+            buttonText:'Uncompleted'),
+      ],
     );
   }
 }
