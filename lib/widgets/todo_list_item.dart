@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../model/todo.dart';
+
 class TodoListItem extends StatefulWidget {
-  const TodoListItem({Key? key}) : super(key: key);
+  final Todo todo;
+
+  const TodoListItem({Key? key, required this.todo}) : super(key: key);
 
   @override
   State<TodoListItem> createState() => _TodoListItemState();
@@ -11,12 +15,15 @@ class _TodoListItemState extends State<TodoListItem> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-
       leading: Checkbox(
-        value: true,
-        onChanged: (bool? value) {},
+        value: widget.todo.isCompleted,
+        onChanged: (bool? value) {
+          setState(() {
+            widget.todo.isCompleted = value!;
+          });
+        },
       ),
-      title: Text('Go to Gym'),
+      title: Text(widget.todo.description),
     );
   }
 }

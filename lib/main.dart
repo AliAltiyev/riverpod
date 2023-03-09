@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:riverpod/screens/home.dart';
+import 'package:stateManagmentRiverpod/screens/home.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
