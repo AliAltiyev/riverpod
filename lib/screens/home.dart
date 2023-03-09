@@ -1,29 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stateManagmentRiverpod/provider/provider_manager.dart';
 
 import '../model/todo.dart';
+import '../provider/provider.dart';
 import '../widgets/title.dart';
 import '../widgets/todo_list_item.dart';
 import '../widgets/tooltip.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class HomeScreen extends ConsumerWidget {
+  HomeScreen({Key? key}) : super(key: key);
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   final _textController = TextEditingController();
-  List<Todo> todos = [
-    Todo(id: const Uuid().v4(), description: 'Sport'),
-    Todo(id: const Uuid().v4(), description: 'Yoga'),
-    Todo(id: const Uuid().v4(), description: 'Learning Time'),
-    Todo(id: const Uuid().v4(), description: 'School')
-  ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final todos = ref.watch(toDoListProvider);
     return Scaffold(
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -33,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
             decoration: const InputDecoration(labelText: 'Add task'),
             controller: _textController,
             onSubmitted: (value) {
-              //TODO do not forget
+              ref.read(toDoListProvider.notifier).addTodo(value);
             },
           ),
           const SizedBox(
@@ -53,7 +45,9 @@ class _HomeScreenState extends State<HomeScreen> {
           for (int i = 0; i < todos.length; i++)
             Dismissible(
                 key: UniqueKey(),
-                onDismissed: (_) {},
+                onDismissed: (_) {
+                  ref.read(toDoListProvider.notifier).remove(todos[i]);
+                },
                 child: TodoListItem(todo: todos[i]))
         ],
       ),
