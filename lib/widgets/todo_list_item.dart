@@ -2,12 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stateManagmentRiverpod/provider/provider.dart';
 
-import '../model/todo.dart';
-
 class TodoListItem extends ConsumerStatefulWidget {
-  final Todo todo;
-
-  const TodoListItem({Key? key, required this.todo}) : super(key: key);
+  const TodoListItem({Key? key}) : super(key: key);
 
   @override
   ConsumerState createState() => _TodoListItemState();
@@ -20,6 +16,8 @@ class _TodoListItemState extends ConsumerState<TodoListItem> {
 
   @override
   Widget build(BuildContext context) {
+    final item = ref.watch(todoItemProvider);
+
     return Focus(
       onFocusChange: (isFocused) {
         if (!isFocused) {
@@ -27,9 +25,8 @@ class _TodoListItemState extends ConsumerState<TodoListItem> {
             _hasFocuse = false;
             ref
                 .read(toDoListProvider.notifier)
-                .editTodo(widget.todo.id, _descriptionTextController.text);
+                .editTodo(item.id, _descriptionTextController.text);
           });
-
         }
       },
       child: ListTile(
@@ -37,20 +34,20 @@ class _TodoListItemState extends ConsumerState<TodoListItem> {
             setState(() {
               _hasFocuse = true;
               _textFocusNode.requestFocus();
-              _descriptionTextController.text = widget.todo.description;
+              _descriptionTextController.text = item.description;
             });
           },
           leading: Checkbox(
-              value: widget.todo.isCompleted,
+              value: item.isCompleted,
               onChanged: (bool? value) {
-                ref.read(toDoListProvider.notifier).toggle(widget.todo.id);
+                ref.read(toDoListProvider.notifier).toggle(item.id);
               }),
           title: _hasFocuse
               ? TextField(
                   focusNode: _textFocusNode,
                   controller: _descriptionTextController,
                 )
-              : Text(widget.todo.description)),
+              : Text(item.description)),
     );
   }
 

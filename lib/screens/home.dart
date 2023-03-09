@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stateManagmentRiverpod/provider/provider_manager.dart';
 
-import '../model/todo.dart';
 import '../provider/provider.dart';
 import '../widgets/title.dart';
 import '../widgets/todo_list_item.dart';
@@ -38,7 +36,9 @@ class HomeScreen extends ConsumerWidget {
                 onDismissed: (_) {
                   ref.read(toDoListProvider.notifier).remove(todos[i]);
                 },
-                child: TodoListItem(todo: todos[i]))
+                child: ProviderScope(
+                    overrides: [todoItemProvider.overrideWithValue(todos[i])],
+                    child: const TodoListItem()))
         ],
       ),
     );
@@ -52,21 +52,24 @@ class Toolbar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final listLength = ref.watch(toDoListProvider).length;
-    final listCompleted =
-        ref.watch(toDoListProvider).where((element) => element.isCompleted).length;
-    final listUncompleted =
-        ref.watch(toDoListProvider).where((element) => !element.isCompleted).length;
+    final listLength = ref.watch(allItemsLength);
+    debugPrint('All items length $listLength');
+
+    final completedItems = ref.watch(completedListItems);
+    debugPrint('Completed items length $completedItems');
+
+    final uncompletedItems = ref.watch(unCompletedListItems);
+    debugPrint('UnCompleted items length $uncompletedItems');
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(child: Text(listLength.toString())),
         CustomTooltip(message: 'All Todos $listLength', buttonText: 'All'),
         CustomTooltip(
-            message: listCompleted.toString(), buttonText: 'Completed'),
+            message: completedItems.toString(), buttonText: 'Completed'),
         CustomTooltip(
-            message: listUncompleted.toString(),
-            buttonText:'Uncompleted'),
+            message: uncompletedItems.toString(), buttonText: 'Uncompleted'),
       ],
     );
   }
