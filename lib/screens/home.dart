@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stateManagmentRiverpod/provider/provider_manager.dart';
+import 'package:stateManagmentRiverpod/screens/second_screen.dart';
 
-import '../model/todo.dart';
 import '../provider/provider.dart';
 import '../widgets/title.dart';
 import '../widgets/todo_list_item.dart';
@@ -31,26 +30,54 @@ class HomeScreen extends ConsumerWidget {
           const SizedBox(
             height: 20,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Expanded(child: Text('4 todos')),
-              CustomTooltip(message: 'All Todos', buttonText: 'All'),
-              CustomTooltip(
-                  message: 'Completed Todos', buttonText: 'Completed'),
-              CustomTooltip(
-                  message: 'Uncompleted Todos', buttonText: 'Uncompleted'),
-            ],
-          ),
+          const Toolbar(),
           for (int i = 0; i < todos.length; i++)
             Dismissible(
                 key: UniqueKey(),
                 onDismissed: (_) {
                   ref.read(toDoListProvider.notifier).remove(todos[i]);
                 },
-                child: TodoListItem(todo: todos[i]))
+                child: ProviderScope(
+                    overrides: [todoItemProvider.overrideWithValue(todos[i])],
+                    child: const TodoListItem())),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const SecondPage()));
+              },
+              child: const Text('Get data from internet'))
         ],
       ),
+    );
+  }
+}
+
+class Toolbar extends ConsumerWidget {
+  const Toolbar({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final listLength = ref.watch(allItemsLength);
+    debugPrint('All items length $listLength');
+
+    final completedItems = ref.watch(completedListItems);
+    debugPrint('Completed items length $completedItems');
+
+    final uncompletedItems = ref.watch(unCompletedListItems);
+    debugPrint('UnCompleted items length $uncompletedItems');
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(child: Text(listLength.toString())),
+        CustomTooltip(message: 'All Todos $listLength', buttonText: 'All'),
+        CustomTooltip(
+            message: completedItems.toString(), buttonText: 'Completed'),
+        CustomTooltip(
+            message: uncompletedItems.toString(), buttonText: 'Uncompleted'),
+      ],
     );
   }
 }

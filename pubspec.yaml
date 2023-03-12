@@ -38,6 +38,7 @@ dependencies:
   uuid: ^3.0.6
   riverpod: ^2.3.1
   flutter_riverpod: ^2.3.1
+  dio: ^5.0.2
 
 
 dev_dependencies:
