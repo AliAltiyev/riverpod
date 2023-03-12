@@ -1,24 +1,24 @@
 import 'dart:convert';
 
-class Todoapimodel {
+class TodoApiModel {
   final int userId;
   final int id;
   final String title;
   final bool completed;
-  Todoapimodel({
+  TodoApiModel({
     required this.userId,
     required this.id,
     required this.title,
     required this.completed,
   });
 
-  Todoapimodel copyWith({
+  TodoApiModel copyWith({
     int? userId,
     int? id,
     String? title,
     bool? completed,
   }) {
-    return Todoapimodel(
+    return TodoApiModel(
       userId: userId ?? this.userId,
       id: id ?? this.id,
       title: title ?? this.title,
@@ -35,8 +35,8 @@ class Todoapimodel {
     };
   }
 
-  factory Todoapimodel.fromMap(Map<String, dynamic> map) {
-    return Todoapimodel(
+  factory TodoApiModel.fromMap(Map<String, dynamic> map) {
+    return TodoApiModel(
       userId: map['userId'].toInt() as int,
       id: map['id'].toInt() as int,
       title: map['title'] as String,
@@ -46,8 +46,8 @@ class Todoapimodel {
 
   String toJson() => json.encode(toMap());
 
-  factory Todoapimodel.fromJson(String source) =>
-      Todoapimodel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory TodoApiModel.fromJson(String source) =>
+      TodoApiModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -55,7 +55,7 @@ class Todoapimodel {
   }
 
   @override
-  bool operator ==(covariant Todoapimodel other) {
+  bool operator ==(covariant TodoApiModel other) {
     if (identical(this, other)) return true;
 
     return other.userId == userId &&

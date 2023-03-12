@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stateManagmentRiverpod/screens/second_screen.dart';
 
 import '../provider/provider.dart';
 import '../widgets/title.dart';
@@ -40,7 +41,11 @@ class HomeScreen extends ConsumerWidget {
                     overrides: [todoItemProvider.overrideWithValue(todos[i])],
                     child: const TodoListItem())),
           ElevatedButton(
-              onPressed: () {}, child: const Text('Get data from internet'))
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const SecondPage()));
+              },
+              child: const Text('Get data from internet'))
         ],
       ),
     );
