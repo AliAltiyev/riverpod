@@ -38,7 +38,9 @@ class HomeScreen extends ConsumerWidget {
                 },
                 child: ProviderScope(
                     overrides: [todoItemProvider.overrideWithValue(todos[i])],
-                    child: const TodoListItem()))
+                    child: const TodoListItem())),
+          ElevatedButton(
+              onPressed: () {}, child: const Text('Get data from internet'))
         ],
       ),
     );

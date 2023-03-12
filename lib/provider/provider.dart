@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:stateManagmentRiverpod/provider/provider_manager.dart';
 import 'package:uuid/uuid.dart';
@@ -6,8 +7,7 @@ import '../model/todo.dart';
 
 //Provides all list Items
 final toDoListProvider = StateNotifierProvider<ProviderManager, List<Todo>>(
-        (ref) =>
-        ProviderManager([
+    (ref) => ProviderManager([
           Todo(id: const Uuid().v4(), description: 'Go To Gym'),
           Todo(id: const Uuid().v4(), description: 'School'),
           Todo(id: const Uuid().v4(), description: 'Shopping Time'),
@@ -34,13 +34,17 @@ final completedListItems = Provider<int>((ref) {
 
 //All list items length
 final allItemsLength = Provider<int>((ref) {
-  final allItems = ref
-      .watch(toDoListProvider)
-      .length;
+  final allItems = ref.watch(toDoListProvider).length;
   return allItems;
 });
 
 //Provide TodoItem
 final todoItemProvider = Provider<Todo>((ref) {
   throw UnimplementedError();
+});
+
+const _baseUrl = 'https://jsonplaceholder.typicode.com/';
+
+final httpProvider = Provider<Dio>((ref) {
+  return Dio(BaseOptions(baseUrl: _baseUrl));
 });
