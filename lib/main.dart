@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stateManagmentRiverpod/screens/future_builder.dart';
 import 'package:stateManagmentRiverpod/screens/home.dart';
 
 void main() {
@@ -21,7 +22,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.orange,
       ),
-      home: HomeScreen(),
+
+
+
+
+
+      home: FutureBuilderExample(),
     );
   }
 }
