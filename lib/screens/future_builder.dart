@@ -1,14 +1,39 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
-class FutureBuilderExample extends StatelessWidget {
+class FutureBuilderExample extends StatefulWidget {
   const FutureBuilderExample({Key? key}) : super(key: key);
+
+  @override
+  State<FutureBuilderExample> createState() => _FutureBuilderExampleState();
+}
+
+class _FutureBuilderExampleState extends State<FutureBuilderExample> {
+  final _future = Future.delayed(const Duration(seconds: 2)).then((value) {
+    return Random().nextInt(100);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () {
+                //For calling method build
+                setState(() {});
+              },
+              icon: const Icon(Icons.refresh))
+        ],
+      ),
       body: SafeArea(
         child: FutureBuilder(
-            future: Future.delayed(Duration(seconds: 2)).then((value) => 100),
+
+            // My future response  from https://www.google.com/
+            // Not calls future every time when method build executes if
+            // I will not create instance of Future into the Build method.
+            future: _future,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState == ConnectionState.none) {}
               if (snapshot.connectionState == ConnectionState.values) {}
@@ -31,7 +56,7 @@ class FutureBuilderExample extends StatelessWidget {
                 );
               }
 
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }),
       ),
     );
